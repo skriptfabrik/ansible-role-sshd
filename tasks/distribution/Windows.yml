@@ -31,11 +31,11 @@
 - name: 'Windows : Create sshd_config'
   ansible.windows.win_template:
     src: 'opensshd.conf.j2'
-    dest: 'C:\ProgramData\ssh\sshd_config'
+    dest: '{{ sshd_config_path }}\sshd_config'
   notify: restart windows sshd
 
 - name: 'Windows : Create revoked_keys'
   ansible.windows.win_template:
     src: 'revoked_keys.j2'
-    dest: 'C:\ProgramData\ssh\revoked_keys'
+    dest: '{{ sshd_config_path }}\revoked_keys'
   notify: restart windows sshd

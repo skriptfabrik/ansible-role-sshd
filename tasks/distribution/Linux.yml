@@ -14,18 +14,27 @@
   become: true
   ansible.builtin.template:
     src: 'revoked_keys.j2'
-    dest: '/etc/ssh/revoked_keys'
+    dest: '{{ sshd_config_path }}/revoked_keys'
     mode: '0600'
     owner: '{{ ssh_owner }}'
     group: '{{ ssh_group }}'
   notify: restart linux sshd
   when: ssh_server_hardening | bool
 
+- name: 'Linux : create sshd_config.d and set permissions to root/700'
+  become: true
+  ansible.builtin.file:
+    path: '{{ sshd_config_path }}/sshd_config.d'
+    mode: '0700'
+    owner: '{{ ssh_owner }}'
+    group: '{{ ssh_group }}'
+  when: sshd_version.stdout >= '8.2'
+
 - name: 'Linux : create sshd_config and set permissions to root/600'
   become: true
   ansible.builtin.template:
     src: 'opensshd.conf.j2'
-    dest: '/etc/ssh/sshd_config'
+    dest: '{{ sshd_config_path }}/sshd_config'
     mode: '0600'
     owner: '{{ ssh_owner }}'
     group: '{{ ssh_group }}'
@@ -33,11 +42,20 @@
   notify: restart linux sshd
   when: ssh_server_hardening | bool
 
+- name: 'Linux : create ssh_config.d and set permissions to root/755'
+  become: true
+  ansible.builtin.file:
+    path: '{{ sshd_config_path }}/ssh_config.d'
+    mode: '0755'
+    owner: '{{ ssh_owner }}'
+    group: '{{ ssh_group }}'
+  when: sshd_version.stdout >= '8.2'
+
 - name: 'Linux : create ssh_config and set permissions to root/644'
   become: true
   ansible.builtin.template:
     src: 'openssh.conf.j2'
-    dest: '/etc/ssh/ssh_config'
+    dest: '{{ sshd_config_path }}/ssh_config'
     mode: '0644'
     owner: '{{ ssh_owner }}'
     group: '{{ ssh_group }}'
