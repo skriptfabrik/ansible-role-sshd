@@ -13,6 +13,7 @@ Include {{ sshd_config_path }}/ssh_config.d/*.conf
 {% for line in ssh_custom_options %}
 {{ line }}
 {% endfor %}
+
 {% endif %}
 
 # Basic configuration

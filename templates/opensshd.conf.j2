@@ -13,6 +13,7 @@ Include {{ sshd_config_path }}/sshd_config.d/*.conf
 {% for line in sshd_custom_options -%}
 {{ line }}
 {% endfor %}
+
 {% endif %}
 
 # Basic configuration
@@ -212,6 +213,7 @@ PermitUserEnvironment yes
 {% for item in ssh_server_permit_environment_vars -%}
 AcceptEnv {{ item }}
 {% endfor %}
+
 {% else -%}
 PermitUserEnvironment no
 {% endif %}
@@ -269,6 +271,7 @@ Match Address {{ item.address }}
   {% for rule in item.rules %}
     {{ rule | indent(4) }}
   {% endfor %}
+
 {% endfor %}
 {% endif %}
 
@@ -281,6 +284,7 @@ Match Group {{ item.group }}
   {% for rule in item.rules %}
     {{ rule | indent(4) }}
   {% endfor %}
+
 {% endfor %}
 {% endif %}
 
@@ -293,5 +297,6 @@ Match User {{ item.user }}
   {% for rule in item.rules %}
     {{ rule | indent(4) }}
   {% endfor %}
+
 {% endfor %}
 {% endif %}
