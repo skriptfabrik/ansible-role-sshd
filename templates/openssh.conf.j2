@@ -66,7 +66,7 @@ StrictHostKeyChecking ask
 #
 
 {# This outputs "Ciphers <list-of-ciphers>" if ssh_ciphers is defined or "#Ciphers" if ssh_ciphers is undefined #}
-{{ "Ciphers "+ssh_ciphers| join(',') if ssh_ciphers else "Ciphers"|comment }}
+{{ "Ciphers " + ssh_ciphers | join(',') if ssh_ciphers else "Ciphers" | comment }}
 
 # **Hash algorithms** -- Make sure not to use SHA1 for hashing, unless it is really necessary.
 # Weak HMAC is sometimes required if older package versions are used
@@ -74,7 +74,7 @@ StrictHostKeyChecking ask
 #
 
 {# This outputs "MACs <list-of-macs>" if ssh_macs is defined or "#MACs" if ssh_macs is undefined #}
-{{ "MACs "+ssh_macs| join(',') if ssh_macs else "MACs"|comment }}
+{{ "MACs " + ssh_macs | join(',') if ssh_macs else "MACs" | comment }}
 
 # Alternative setting, if OpenSSH version is below v5.9
 #MACs hmac-ripemd160
@@ -85,7 +85,7 @@ StrictHostKeyChecking ask
 # based on: https://bettercrypto.org/static/applied-crypto-hardening.pdf
 
 {# This outputs "KexAlgorithms <list-of-algos>" if ssh_kex is defined or "#KexAlgorithms" if ssh_kex is undefined #}
-{{ "KexAlgorithms "+ssh_kex| join(',') if ssh_kex else "KexAlgorithms"|comment }}
+{{ "KexAlgorithms " + ssh_kex | join(',') if ssh_kex else "KexAlgorithms" | comment }}
 
 # Disable agent forwarding, since local agent could be accessed through forwarded connection.
 ForwardAgent no

@@ -11,18 +11,20 @@
               - openssh-clients
               - openssh-server
         - name: Generate host keys on CentOS
+          changed_when: false
           ansible.builtin.command: ssh-keygen -A
     - name: Install openssh on Debian/Ubuntu
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
       ansible.builtin.apt:
         name:
           - openssh-server
           - openssh-client
         update_cache: true
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-    - name: workaround directory
+    - name: Workaround directory
       ansible.builtin.file:
-        path: '/var/run/sshd'
+        path: /var/run/sshd
         state: directory
+        mode: 0775
 
   roles:
     - role: skriptfabrik.sshd

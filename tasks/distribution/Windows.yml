@@ -1,26 +1,27 @@
 ---
-- name: 'Windows : Install OpenSSH'
+- name: "Windows : Install OpenSSH"
   become_method: runas
   become_user: System
   become: true
   sbaerlocher.windows.win_capability:
-    name: 'OpenSSH.Server~~~~0.0.1.0'
+    name: OpenSSH.Server~~~~0.0.1.0
 
-- name: 'Windows : Get openssh-version'
+- name: "Windows : Get openssh-version"
   ansible.windows.win_shell: ssh -V
   changed_when: false
   register: sshd_verstion_string
   check_mode: false
 
-- name: 'Windows : Set openssh-version'
+- name: "Windows : Set openssh-version"
   ansible.builtin.set_fact:
     sshd_version:
-      stdout: '{{ sshd_verstion_string.stderr | regex_search("(\d{1,2}\.\d{1,2})(?!\.)") }}'
+      stdout: >-
+        {{ sshd_verstion_string.stderr | regex_search("(\d{1,2}\.\d{1,2})(?!\.)") }}
 
-- name: 'Windows : Include tasks to create crypo-vars'
+- name: "Windows : Include tasks to create crypo-vars"
   ansible.builtin.include_tasks: subtasks/crypto.yml
 
-- name: 'Windows : Set the default shell to PowerShell'
+- name: "Windows : Set the default shell to PowerShell"
   ansible.windows.win_regedit:
     path: HKLM:\SOFTWARE\OpenSSH
     name: DefaultShell
@@ -28,14 +29,14 @@
     type: string
     state: present
 
-- name: 'Windows : Create sshd_config'
+- name: "Windows : Create sshd_config"
+  notify: Restart windows sshd
   ansible.windows.win_template:
-    src: 'opensshd.conf.j2'
-    dest: '{{ sshd_config_path }}\sshd_config'
-  notify: restart windows sshd
+    src: opensshd.conf.j2
+    dest: "{{ sshd_config_path }}\\sshd_config"
 
-- name: 'Windows : Create revoked_keys'
+- name: "Windows : Create revoked_keys"
+  notify: Restart windows sshd
   ansible.windows.win_template:
-    src: 'revoked_keys.j2'
-    dest: '{{ sshd_config_path }}\revoked_keys'
-  notify: restart windows sshd
+    src: revoked_keys.j2
+    dest: "{{ sshd_config_path }}\revoked_keys"

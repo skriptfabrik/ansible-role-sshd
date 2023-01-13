@@ -1,4 +1,4 @@
 ---
 sshd_service_name: sshd
-sshd_config_path: 'C:\ProgramData\ssh\'
-sshd_sftp_subsystem: 'sftp sftp-server.exe'
+sshd_config_path: C:\ProgramData\ssh\
+sshd_sftp_subsystem: sftp sftp-server.exe
