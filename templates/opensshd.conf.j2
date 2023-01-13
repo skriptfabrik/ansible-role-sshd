@@ -97,7 +97,7 @@ UsePrivilegeSeparation {% if (ansible_distribution == 'Debian' and ansible_distr
 
 LoginGraceTime 30s
 MaxAuthTries {{ssh_max_auth_retries}}
-MaxSessions 10
+MaxSessions {{ssh_max_sessions}}
 MaxStartups {{ssh_max_startups}}
 
 # Enable public key authentication
