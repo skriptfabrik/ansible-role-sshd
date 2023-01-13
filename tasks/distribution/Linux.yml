@@ -1,90 +1,92 @@
 ---
-- name: 'Linux : get openssh-version'
-  ansible.builtin.shell: set -o pipefail && ssh -V 2>&1 | sed -r 's/.*_([0-9]*\.[0-9]).*/\1/g'
+- name: "Linux : get openssh-version"
   args:
     executable: /bin/bash
   changed_when: false
   register: sshd_version
   check_mode: false
+  ansible.builtin.shell: set -o pipefail && ssh -V 2>&1 | sed -r 's/.*_([0-9]*\.[0-9]).*/\1/g'
 
-- name: 'Linux : include tasks to create crypo-vars'
+- name: "Linux : include tasks to create crypo-vars"
   ansible.builtin.include_tasks: subtasks/crypto.yml
 
-- name: 'LInux : create revoked_keys and set permissions to root/600'
+- name: "Linux : create revoked_keys and set permissions to root/600"
   become: true
-  ansible.builtin.template:
-    src: 'revoked_keys.j2'
-    dest: '{{ sshd_config_path }}/revoked_keys'
-    mode: '0600'
-    owner: '{{ ssh_owner }}'
-    group: '{{ ssh_group }}'
-  notify: restart linux sshd
+  notify: Restart linux sshd
   when: ssh_server_hardening | bool
-
-- name: 'Linux : create sshd_config.d and set permissions to root/700'
-  become: true
-  ansible.builtin.file:
-    path: '{{ sshd_config_path }}/sshd_config.d'
-    mode: '0700'
-    owner: '{{ ssh_owner }}'
-    group: '{{ ssh_group }}'
-  when: sshd_version.stdout >= '8.2'
-
-- name: 'Linux : create sshd_config and set permissions to root/600'
-  become: true
   ansible.builtin.template:
-    src: 'opensshd.conf.j2'
-    dest: '{{ sshd_config_path }}/sshd_config'
-    mode: '0600'
-    owner: '{{ ssh_owner }}'
-    group: '{{ ssh_group }}'
-    validate: '/usr/sbin/sshd -T -C user=root -C host=localhost -C addr=localhost -f %s'
-  notify: restart linux sshd
+    src: revoked_keys.j2
+    dest: "{{ sshd_config_path }}/revoked_keys"
+    mode: 0600
+    owner: "{{ ssh_owner }}"
+    group: "{{ ssh_group }}"
+
+- name: "Linux : create sshd_config.d and set permissions to root/700"
+  become: true
+  when: sshd_version.stdout >= '8.2'
+  ansible.builtin.file:
+    path: "{{ sshd_config_path }}/sshd_config.d"
+    mode: 0700
+    owner: "{{ ssh_owner }}"
+    group: "{{ ssh_group }}"
+
+- name: "Linux : create sshd_config and set permissions to root/600"
+  become: true
+  notify: Restart linux sshd
   when: ssh_server_hardening | bool
-
-- name: 'Linux : create ssh_config.d and set permissions to root/755'
-  become: true
-  ansible.builtin.file:
-    path: '{{ sshd_config_path }}/ssh_config.d'
-    mode: '0755'
-    owner: '{{ ssh_owner }}'
-    group: '{{ ssh_group }}'
-  when: sshd_version.stdout >= '8.2'
-
-- name: 'Linux : create ssh_config and set permissions to root/644'
-  become: true
   ansible.builtin.template:
-    src: 'openssh.conf.j2'
-    dest: '{{ sshd_config_path }}/ssh_config'
-    mode: '0644'
-    owner: '{{ ssh_owner }}'
-    group: '{{ ssh_group }}'
+    src: opensshd.conf.j2
+    dest: "{{ sshd_config_path }}/sshd_config"
+    mode: 0600
+    owner: "{{ ssh_owner }}"
+    group: "{{ ssh_group }}"
+    validate: /usr/sbin/sshd -T -C user=root -C host=localhost -C addr=localhost -f %s
+
+- name: "Linux : create ssh_config.d and set permissions to root/755"
+  become: true
+  when: sshd_version.stdout >= "8.2"
+  ansible.builtin.file:
+    path: "{{ sshd_config_path }}/ssh_config.d"
+    mode: 0755
+    owner: "{{ ssh_owner }}"
+    group: "{{ ssh_group }}"
+
+- name: "Linux : create ssh_config and set permissions to root/644"
+  become: true
   when: ssh_client_hardening | bool
+  ansible.builtin.template:
+    src: openssh.conf.j2
+    dest: "{{ sshd_config_path }}/ssh_config"
+    mode: 0644
+    owner: "{{ ssh_owner }}"
+    group: "{{ ssh_group }}"
 
-- name: 'Linux : Check if {{ sshd_moduli_file }} contains weak DH parameters'
-  ansible.builtin.shell: awk '$5 < {{ sshd_moduli_minimum }}' {{ sshd_moduli_file }}
+- name: "Linux : Check for weak DH parameters in {{ sshd_moduli_file }}"
   register: sshd_register_moduli
   changed_when: false
   check_mode: false
+  ansible.builtin.shell:
+    cmd: awk '$5 < {{ sshd_moduli_minimum }}' {{ sshd_moduli_file }}
 
-- name: 'Linux : Remove all small primes'
-  ansible.builtin.shell: |
-    awk '$5 >= {{ sshd_moduli_minimum }}' {{ sshd_moduli_file }} > {{ sshd_moduli_file }}.new ;
-    [ -r {{ sshd_moduli_file }}.new -a -s {{ sshd_moduli_file }}.new ] && mv {{ sshd_moduli_file }}.new {{ sshd_moduli_file }} || true
-  notify: restart linux sshd
+- name: "Linux : Remove all small primes"
+  notify: Restart linux sshd
   when: sshd_register_moduli.stdout
+  ansible.builtin.shell:
+    cmd: |
+      awk '$5 >= {{ sshd_moduli_minimum }}' {{ sshd_moduli_file }} > {{ sshd_moduli_file }}.new ;
+      [ -r {{ sshd_moduli_file }}.new -a -s {{ sshd_moduli_file }}.new ] && mv {{ sshd_moduli_file }}.new {{ sshd_moduli_file }} || true
 
-- name: 'Linux : Include tasks to setup ca keys and principals'
-  ansible.builtin.include_tasks: subtasks/ca_keys_and_principals.yml
+- name: "Linux : Include tasks to setup ca keys and principals"
   when: ssh_trusted_user_ca_keys_file | length > 0
+  ansible.builtin.include_tasks: subtasks/ca_keys_and_principals.yml
 
-- name: 'Linux : include tasks to setup 2FA'
-  ansible.builtin.include_tasks: subtasks/2fa.yml
+- name: "Linux : include tasks to setup 2FA"
   when:
     - ssh_use_pam | bool
     - ssh_challengeresponseauthentication | bool
     - ssh_google_auth | bool
+  ansible.builtin.include_tasks: subtasks/2fa.yml
 
-- name: 'Linux : include selinux specific tasks'
-  ansible.builtin.include_tasks: subtasks/selinux.yml
+- name: "Linux : include selinux specific tasks"
   when: ansible_selinux and ansible_selinux.status == "enabled"
+  ansible.builtin.include_tasks: subtasks/selinux.yml
