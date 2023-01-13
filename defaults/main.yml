@@ -171,6 +171,9 @@ ssh_server_permit_environment_vars: false
 # maximum number of concurrent unauthenticated connections to the SSH daemon
 ssh_max_startups: '10:30:100' # sshd
 
+# maximum number of open shell, login or subsystem (e.g. sftp) sessions permitted per network connection.
+ssh_max_sessions: 10 # sshd
+
 ssh_ps53: 'yes'
 ssh_ps59: 'sandbox'
 
