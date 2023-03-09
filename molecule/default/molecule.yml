@@ -10,6 +10,9 @@ platforms:
     capabilities:
       - SYS_ADMIN
     command: /lib/systemd/systemd
+    tmpfs:
+      - /run
+      - /tmp
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     privileged: true

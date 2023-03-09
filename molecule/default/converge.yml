@@ -1,6 +1,7 @@
 ---
 - name: Converge
   hosts: all
+  become: true
   pre_tasks:
     - name: Install openssh on CentOS
       when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
