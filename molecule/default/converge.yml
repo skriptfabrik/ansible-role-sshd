@@ -25,7 +25,8 @@
       ansible.builtin.file:
         path: /var/run/sshd
         state: directory
-        mode: 0775
+        mode: 0755
+        owner: root
 
   roles:
     - role: skriptfabrik.sshd
