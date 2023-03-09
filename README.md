@@ -10,6 +10,7 @@ The role is a fork of [arillso.sshd](https://github.com/arillso/ansible.sshd).
 ## Installation
 
 ```bash
+ansible-galaxy collection install community.crypto
 ansible-galaxy install skriptfabrik.sshd
 ```
 
