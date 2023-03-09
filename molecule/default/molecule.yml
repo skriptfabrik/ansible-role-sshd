@@ -7,6 +7,8 @@ driver:
 platforms:
   - name: instance
     image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest
+    capabilities:
+      - SYS_ADMIN
     command: /lib/systemd/systemd
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
