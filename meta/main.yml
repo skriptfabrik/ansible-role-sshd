@@ -9,13 +9,14 @@ galaxy_info:
   platforms:
     - name: Debian
       versions:
-        - wheezy
-        - jessie
         - stretch
+        - buster
+        - bullseye
     - name: Ubuntu
       versions:
-        - trusty
-        - xenial
+        - bionic
+        - focal
+        - jammy
     - name: EL
       versions:
         - all

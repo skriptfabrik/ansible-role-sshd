@@ -39,4 +39,4 @@
   notify: Restart windows sshd
   ansible.windows.win_template:
     src: revoked_keys.j2
-    dest: "{{ sshd_config_path }}\revoked_keys"
+    dest: "{{ sshd_config_path }}\\revoked_keys"

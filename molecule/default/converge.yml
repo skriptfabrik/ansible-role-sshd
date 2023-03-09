@@ -1,6 +1,7 @@
 ---
 - name: Converge
   hosts: all
+  become: true
   pre_tasks:
     - name: Install openssh on CentOS
       when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
@@ -24,7 +25,8 @@
       ansible.builtin.file:
         path: /var/run/sshd
         state: directory
-        mode: 0775
+        mode: 0755
+        owner: root
 
   roles:
     - role: skriptfabrik.sshd

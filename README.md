@@ -101,6 +101,14 @@ Host keys to look for when starting sshd.
 ssh_host_key_files: [] # sshd
 ```
 
+### ssh_force_create_host_key_files
+
+Force the creation of host key files.
+
+```yml
+ssh_force_create_host_key_files: false # sshd
+```
+
 ### ssh_max_auth_retries
 
 Specifies the maximum number of authentication attempts permitted per connection. Once the number of failures reaches half this value, additional failures are logged.
