@@ -28,6 +28,7 @@
             -----END OPENSSH PRIVATE KEY-----
           public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQC+EtfsBhViNsZzC7/8zMYxMwFehAfeoqyHvNtxZbe0UtxturvQzQT1LVus2vY0UKv75+yNFq/wop6X8Y2GcSq469On/KDM37P\
                        6G1pdpM9ySqbI1grtASbs5oeZQP9iuPAQ26eQZoEHDvE+Xj/MnWpaP0VyZJPMg6ne5ha3awqZsw== root@398c7cc8a4a2"
+          size: 1024
           type: rsa
         - path: "{{ sshd_config_path }}/pre_defined_private_key"
           private_key: |-
@@ -47,4 +48,5 @@
             AM0Sg+gP/EsNhgNFPVEzZf6jyucotJqbU0Y2267CeRUk2oShZefxi1l58QDkdKnR6DshbX
             wEmDDodEhchpbGp1cAAAARcm9vdEAzOThjN2NjOGE0YTIBAg==
             -----END OPENSSH PRIVATE KEY-----
+          size: 1024
           type: rsa

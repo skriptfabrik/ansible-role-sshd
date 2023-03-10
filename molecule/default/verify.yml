@@ -2,6 +2,8 @@
 - name: Validate
   hosts: all
   become: true
+  vars:
+    sshd_config_path: /etc/ssh
   tasks:
     - name: Ensure default host key was generated
       block:
