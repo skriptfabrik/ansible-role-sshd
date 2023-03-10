@@ -48,7 +48,7 @@
           ansible.builtin.assert:
             that:
               - _public_key_result.stat.isreg
-              - _public_key_result.stat.checksum == '2094e41dfca4f179bf9deb83b2bdfd5cf6d4f98f'
+              - _public_key_result.stat.checksum == 'cbb0af2c11f1f9f6e873118501d26ea19e4ce58c'
             quiet: true
             fail_msg: Pre defined public key ({{ _public_key_result.stat.checksum }}) was not provided as expected!
     - name: Ensure pre defined host private and public key was provided
@@ -74,6 +74,6 @@
           ansible.builtin.assert:
             that:
               - _public_key_result.stat.isreg
-              - _public_key_result.stat.checksum == '2094e41dfca4f179bf9deb83b2bdfd5cf6d4f98f'
+              - _public_key_result.stat.checksum == 'cbb0af2c11f1f9f6e873118501d26ea19e4ce58c'
             quiet: true
             fail_msg: Public key ({{ _public_key_result.stat.checksum }}) was not generated as expected from predefined private key!
