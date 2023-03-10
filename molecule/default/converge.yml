@@ -9,7 +9,7 @@
         - path: "{{ sshd_config_path }}/generated_key"
           type: rsa
         - path: "{{ sshd_config_path }}/pre_defined_key"
-          private_key: |-
+          private_key: |
             -----BEGIN OPENSSH PRIVATE KEY-----
             b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAlwAAAAdzc2gtcn
             NhAAAAAwEAAQAAAIEAvhLX7AYVYjbGcwu//MzGMTMBXoQH3qKsh7zbcWW3tFLcbbq70M0E
@@ -31,7 +31,7 @@
           size: 1024
           type: rsa
         - path: "{{ sshd_config_path }}/pre_defined_private_key"
-          private_key: |-
+          private_key: |
             -----BEGIN OPENSSH PRIVATE KEY-----
             b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAlwAAAAdzc2gtcn
             NhAAAAAwEAAQAAAIEAvhLX7AYVYjbGcwu//MzGMTMBXoQH3qKsh7zbcWW3tFLcbbq70M0E
