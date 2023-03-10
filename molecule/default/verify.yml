@@ -1,0 +1,79 @@
+---
+- name: Validate
+  hosts: all
+  become: true
+  vars:
+    sshd_config_path: /etc/ssh
+  tasks:
+    - name: Ensure default host key was generated
+      block:
+        - name: Check private key
+          register: _private_key_result
+          ansible.builtin.stat:
+            path: "{{ sshd_config_path }}/ssh_host_rsa_key"
+        - name: Ensure private key exists
+          ansible.builtin.assert:
+            that: _private_key_result.stat.isreg
+            quiet: true
+            fail_msg: RSA private key was not generated!
+        - name: Check public key
+          register: _public_key_result
+          ansible.builtin.stat:
+            path: "{{ sshd_config_path }}/ssh_host_rsa_key.pub"
+        - name: Ensure public key exists
+          ansible.builtin.assert:
+            that: _public_key_result.stat.isreg
+            quiet: true
+            fail_msg: RSA public key was not generated!
+    - name: Ensure pre defined host private and public key was provided
+      block:
+        - name: Check private key
+          register: _private_key_result
+          ansible.builtin.stat:
+            path: "{{ sshd_config_path }}/pre_defined_key"
+            checksum_algorithm: sha1
+        - name: Ensure private key exists
+          ansible.builtin.assert:
+            that:
+              - _private_key_result.stat.isreg
+              - _private_key_result.stat.checksum == 'c96407956201c4047fec47b83aa4dfc67d296705'
+            quiet: true
+            fail_msg: Pre defined private key ({{ _private_key_result.stat.checksum }}) was not provided as expected!
+        - name: Check public key
+          register: _public_key_result
+          ansible.builtin.stat:
+            path: "{{ sshd_config_path }}/pre_defined_key.pub"
+            checksum_algorithm: sha1
+        - name: Ensure public key exists
+          ansible.builtin.assert:
+            that:
+              - _public_key_result.stat.isreg
+              - _public_key_result.stat.checksum == 'cbb0af2c11f1f9f6e873118501d26ea19e4ce58c'
+            quiet: true
+            fail_msg: Pre defined public key ({{ _public_key_result.stat.checksum }}) was not provided as expected!
+    - name: Ensure pre defined host private and public key was provided
+      block:
+        - name: Check private key
+          register: _private_key_result
+          ansible.builtin.stat:
+            path: "{{ sshd_config_path }}/pre_defined_private_key"
+            checksum_algorithm: sha1
+        - name: Ensure private key exists
+          ansible.builtin.assert:
+            that:
+              - _private_key_result.stat.isreg
+              - _private_key_result.stat.checksum == 'c96407956201c4047fec47b83aa4dfc67d296705'
+            quiet: true
+            fail_msg: Pre defined private key ({{ _private_key_result.stat.checksum }}} was not provided as expected!
+        - name: Check public key
+          register: _public_key_result
+          ansible.builtin.stat:
+            path: "{{ sshd_config_path }}/pre_defined_private_key.pub"
+            checksum_algorithm: sha1
+        - name: Ensure public key exists
+          ansible.builtin.assert:
+            that:
+              - _public_key_result.stat.isreg
+              - _public_key_result.stat.checksum == 'cbb0af2c11f1f9f6e873118501d26ea19e4ce58c'
+            quiet: true
+            fail_msg: Public key ({{ _public_key_result.stat.checksum }}) was not generated as expected from predefined private key!

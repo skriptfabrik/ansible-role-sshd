@@ -2,31 +2,51 @@
 - name: Converge
   hosts: all
   become: true
-  pre_tasks:
-    - name: Install openssh on CentOS
-      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-      block:
-        - name: Install openssh on CentOS
-          ansible.builtin.yum:
-            name:
-              - openssh-clients
-              - openssh-server
-        - name: Generate host keys on CentOS
-          changed_when: false
-          ansible.builtin.command: ssh-keygen -A
-    - name: Install openssh on Debian/Ubuntu
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-      ansible.builtin.apt:
-        name:
-          - openssh-server
-          - openssh-client
-        update_cache: true
-    - name: Workaround directory
-      ansible.builtin.file:
-        path: /var/run/sshd
-        state: directory
-        mode: 0755
-        owner: root
-
   roles:
     - role: skriptfabrik.sshd
+    - role: skriptfabrik.sshd
+      ssh_host_key_files:
+        - path: "{{ sshd_config_path }}/generated_key"
+          type: rsa
+        - path: "{{ sshd_config_path }}/pre_defined_key"
+          private_key: |
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAlwAAAAdzc2gtcn
+            NhAAAAAwEAAQAAAIEAvhLX7AYVYjbGcwu//MzGMTMBXoQH3qKsh7zbcWW3tFLcbbq70M0E
+            9S1brNr2NFCr++fsjRav8KKel/GNhnEquOvTp/ygzN+z+htaXaTPckqmyNYK7QEm7OaHmU
+            D/YrjwENunkGaBBw7xPl4/zJ1qWj9FcmSTzIOp3uYWt2sKmbMAAAII9oPP1faDz9UAAAAH
+            c3NoLXJzYQAAAIEAvhLX7AYVYjbGcwu//MzGMTMBXoQH3qKsh7zbcWW3tFLcbbq70M0E9S
+            1brNr2NFCr++fsjRav8KKel/GNhnEquOvTp/ygzN+z+htaXaTPckqmyNYK7QEm7OaHmUD/
+            YrjwENunkGaBBw7xPl4/zJ1qWj9FcmSTzIOp3uYWt2sKmbMAAAADAQABAAAAgC1i0H5CYZ
+            7HF5HnD1vtBbI/zKbl/f8SdwIefYPRVxFO6+Wjvi84lWN6Bjb7Pej2DmsjUR/LeA2MtzPu
+            8O1WXm3J+b6Ulw8QTqaTzRYWSvrffkE2gFujJlsE3fyrTKv13LBR6SnQrd0vCFXo3UX5/Z
+            uRGBmVtC6VZqKqmrl9daJZAAAAQF2XSHdboT6a3ygtNyPHk4JJqHvdJq9hBaTDvykEUASc
+            bWfDb6IkDeHpYbPjKhO8vp7eel68XMcCyNjarrA1V8cAAABBAO1GyKlW1AbCDYQ8jZCghx
+            QxcIfxvhwUcHayxT0mXaohY0jIsZ8JwG8lp/DDfJuCf78DeGOQyVfSvUo5qFPlMwUAAABB
+            AM0Sg+gP/EsNhgNFPVEzZf6jyucotJqbU0Y2267CeRUk2oShZefxi1l58QDkdKnR6DshbX
+            wEmDDodEhchpbGp1cAAAARcm9vdEAzOThjN2NjOGE0YTIBAg==
+            -----END OPENSSH PRIVATE KEY-----
+          public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQC+EtfsBhViNsZzC7/8zMYxMwFehAfeoqyHvNtxZbe0UtxturvQzQT1LVus2vY0UKv75+yNFq/wop6X8Y2GcSq469On/KDM37P\
+                       6G1pdpM9ySqbI1grtASbs5oeZQP9iuPAQ26eQZoEHDvE+Xj/MnWpaP0VyZJPMg6ne5ha3awqZsw==\n"
+          size: 1024
+          type: rsa
+        - path: "{{ sshd_config_path }}/pre_defined_private_key"
+          private_key: |
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAlwAAAAdzc2gtcn
+            NhAAAAAwEAAQAAAIEAvhLX7AYVYjbGcwu//MzGMTMBXoQH3qKsh7zbcWW3tFLcbbq70M0E
+            9S1brNr2NFCr++fsjRav8KKel/GNhnEquOvTp/ygzN+z+htaXaTPckqmyNYK7QEm7OaHmU
+            D/YrjwENunkGaBBw7xPl4/zJ1qWj9FcmSTzIOp3uYWt2sKmbMAAAII9oPP1faDz9UAAAAH
+            c3NoLXJzYQAAAIEAvhLX7AYVYjbGcwu//MzGMTMBXoQH3qKsh7zbcWW3tFLcbbq70M0E9S
+            1brNr2NFCr++fsjRav8KKel/GNhnEquOvTp/ygzN+z+htaXaTPckqmyNYK7QEm7OaHmUD/
+            YrjwENunkGaBBw7xPl4/zJ1qWj9FcmSTzIOp3uYWt2sKmbMAAAADAQABAAAAgC1i0H5CYZ
+            7HF5HnD1vtBbI/zKbl/f8SdwIefYPRVxFO6+Wjvi84lWN6Bjb7Pej2DmsjUR/LeA2MtzPu
+            8O1WXm3J+b6Ulw8QTqaTzRYWSvrffkE2gFujJlsE3fyrTKv13LBR6SnQrd0vCFXo3UX5/Z
+            uRGBmVtC6VZqKqmrl9daJZAAAAQF2XSHdboT6a3ygtNyPHk4JJqHvdJq9hBaTDvykEUASc
+            bWfDb6IkDeHpYbPjKhO8vp7eel68XMcCyNjarrA1V8cAAABBAO1GyKlW1AbCDYQ8jZCghx
+            QxcIfxvhwUcHayxT0mXaohY0jIsZ8JwG8lp/DDfJuCf78DeGOQyVfSvUo5qFPlMwUAAABB
+            AM0Sg+gP/EsNhgNFPVEzZf6jyucotJqbU0Y2267CeRUk2oShZefxi1l58QDkdKnR6DshbX
+            wEmDDodEhchpbGp1cAAAARcm9vdEAzOThjN2NjOGE0YTIBAg==
+            -----END OPENSSH PRIVATE KEY-----
+          size: 1024
+          type: rsa

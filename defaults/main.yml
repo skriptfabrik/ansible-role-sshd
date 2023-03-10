@@ -31,6 +31,17 @@ ssh_listen_to: ['0.0.0.0'] # sshd
 
 # Host keys to look for when starting sshd.
 ssh_host_key_files: [] # sshd
+#  - path: "{{ sshd_config_path }}/ssh_host_rsa_key"
+#    private_key: |
+#      xxxxxxxxxxxxx
+#      xxxxxxxxxxxxx
+#      xxxxxxxxxxxxx
+#    public_key: |
+#      xxxxxxxxxxxxx
+#      xxxxxxxxxxxxx
+#      xxxxxxxxxxxxx
+#    size: 8192
+#    type: rsa
 
 # Force the creation of host key files
 ssh_force_create_host_key_files: false # sshd

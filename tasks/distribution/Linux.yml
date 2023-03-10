@@ -14,11 +14,7 @@
   loop: "{{ ssh_host_key_files }}"
   loop_control:
     loop_var: _ssh_host_key_file
-  community.crypto.openssh_keypair:
-    force: "{{ ssh_force_create_host_key_files }}"
-    path: "{{ _ssh_host_key_file }}"
-    regenerate: full_idempotence
-    type: "{{ _ssh_host_key_file | basename | regex_search('_([^_]+)_key$', '\\1') | first }}"
+  ansible.builtin.include_tasks: subtasks/host_keys.yml
 
 - name: "Linux : create revoked_keys and set permissions to root/600"
   become: true
