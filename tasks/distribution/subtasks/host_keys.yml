@@ -1,0 +1,47 @@
+---
+- name: Provide pre defined private ssh host key
+  when: _ssh_host_key_file.private_key is defined
+  ansible.builtin.copy:
+    content: "{{ _ssh_host_key_file.private_key }}"
+    dest: "{{ _ssh_host_key_file.path }}"
+    mode: 0600
+
+- name: Provide pre defined public ssh host key
+  when: _ssh_host_key_file.public_key is defined
+  ansible.builtin.copy:
+    content: "{{ _ssh_host_key_file.public_key }}"
+    dest: "{{ _ssh_host_key_file.path }}.pub"
+    mode: 0644
+
+- name: Validate key type
+  ansible.builtin.assert:
+    that: _ssh_host_key_file.type in ['rsa', 'dsa', 'ecdsa', 'ed25519']
+
+- name: Validate key size for RSA keys
+  when: _ssh_host_key_file.type == 'rsa'
+  ansible.builtin.assert:
+    fail_msg: For RSA keys, the minimum size is 1024 bits!
+    quiet: true
+    that: _ssh_host_key_file.size >= 1024
+
+- name: Validate key size for DSA keys
+  when: _ssh_host_key_file.type == 'dsa'
+  ansible.builtin.assert:
+    fail_msg: DSA keys must be exactly 1024 bits as specified by FIPS 186-2!
+    quiet: true
+    that: _ssh_host_key_file.size == 1024
+
+- name: Validate key size for ECDSA keys
+  when: _ssh_host_key_file.type == 'ecdsa'
+  ansible.builtin.assert:
+    fail_msg: "For ECDSA keys, size determines the key length by selecting from one of three elliptic curve sizes: 256, 384 or 521 bits!"
+    quiet: true
+    that: _ssh_host_key_file.size in [256, 384, 521]
+
+- name: Ensure ssh host key exists
+  community.crypto.openssh_keypair:
+    force: "{{ ssh_force_create_host_key_files }}"
+    path: "{{ _ssh_host_key_file.path }}"
+    regenerate: full_idempotence
+    size: "{{ _ssh_host_key_file.size | default(omit)}}"
+    type: "{{ _ssh_host_key_file.type }}"
