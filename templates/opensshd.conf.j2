@@ -37,7 +37,7 @@ ListenAddress {{ address }}
 
 # List HostKeys here.
 {% for key in ssh_host_key_files -%}
-HostKey {{ key }}          # Req 20
+HostKey {{ key.path }}          # Req 20
 {% endfor %}
 
 # Security configuration
