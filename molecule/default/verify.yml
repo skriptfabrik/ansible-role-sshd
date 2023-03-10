@@ -38,7 +38,7 @@
               - _private_key_result.stat.isreg
               - _private_key_result.stat.checksum == 'c96407956201c4047fec47b83aa4dfc67d296705'
             quiet: true
-            fail_msg: Pre defined private key was not provided!
+            fail_msg: Pre defined private key ({{ _private_key_result.stat.checksum }}) was not provided as expected!
         - name: Check public key
           register: _public_key_result
           ansible.builtin.stat:
@@ -50,7 +50,7 @@
               - _public_key_result.stat.isreg
               - _public_key_result.stat.checksum == '2094e41dfca4f179bf9deb83b2bdfd5cf6d4f98f'
             quiet: true
-            fail_msg: Pre defined public key was not provided!
+            fail_msg: Pre defined public key ({{ _public_key_result.stat.checksum }}) was not provided as expected!
     - name: Ensure pre defined host private and public key was provided
       block:
         - name: Check private key
@@ -64,7 +64,7 @@
               - _private_key_result.stat.isreg
               - _private_key_result.stat.checksum == 'c96407956201c4047fec47b83aa4dfc67d296705'
             quiet: true
-            fail_msg: Pre defined private key was not provided!
+            fail_msg: Pre defined private key ({{ _private_key_result.stat.checksum }}} was not provided as expected!
         - name: Check public key
           register: _public_key_result
           ansible.builtin.stat:
@@ -76,4 +76,4 @@
               - _public_key_result.stat.isreg
               - _public_key_result.stat.checksum == '2094e41dfca4f179bf9deb83b2bdfd5cf6d4f98f'
             quiet: true
-            fail_msg: Public key was not generated from predefined private key!
+            fail_msg: Public key ({{ _public_key_result.stat.checksum }}) was not generated as expected from predefined private key!
