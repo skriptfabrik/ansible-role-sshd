@@ -17,26 +17,29 @@
   ansible.builtin.assert:
     that: _ssh_host_key_file.type in ['rsa', 'dsa', 'ecdsa', 'ed25519']
 
-- name: Validate key size for RSA keys
-  when: _ssh_host_key_file.type == 'rsa'
-  ansible.builtin.assert:
-    fail_msg: For RSA keys, the minimum size is 1024 bits!
-    quiet: true
-    that: _ssh_host_key_file.size >= 1024
+- name: Validate key size
+  when: _ssh_host_key_file.size is defined
+  block:
+    - name: Validate key size for RSA keys
+      when: _ssh_host_key_file.type == 'rsa'
+      ansible.builtin.assert:
+        fail_msg: For RSA keys, the minimum size is 1024 bits!
+        quiet: true
+        that: _ssh_host_key_file.size >= 1024
 
-- name: Validate key size for DSA keys
-  when: _ssh_host_key_file.type == 'dsa'
-  ansible.builtin.assert:
-    fail_msg: DSA keys must be exactly 1024 bits as specified by FIPS 186-2!
-    quiet: true
-    that: _ssh_host_key_file.size == 1024
+    - name: Validate key size for DSA keys
+      when: _ssh_host_key_file.type == 'dsa'
+      ansible.builtin.assert:
+        fail_msg: DSA keys must be exactly 1024 bits as specified by FIPS 186-2!
+        quiet: true
+        that: _ssh_host_key_file.size == 1024
 
-- name: Validate key size for ECDSA keys
-  when: _ssh_host_key_file.type == 'ecdsa'
-  ansible.builtin.assert:
-    fail_msg: "For ECDSA keys, size determines the key length by selecting from one of three elliptic curve sizes: 256, 384 or 521 bits!"
-    quiet: true
-    that: _ssh_host_key_file.size in [256, 384, 521]
+    - name: Validate key size for ECDSA keys
+      when: _ssh_host_key_file.type == 'ecdsa'
+      ansible.builtin.assert:
+        fail_msg: "For ECDSA keys, size determines the key length by selecting from one of three elliptic curve sizes: 256, 384 or 521 bits!"
+        quiet: true
+        that: _ssh_host_key_file.size in [256, 384, 521]
 
 - name: Ensure ssh host key exists
   community.crypto.openssh_keypair:
