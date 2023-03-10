@@ -2,31 +2,5 @@
 - name: Converge
   hosts: all
   become: true
-  pre_tasks:
-    - name: Install openssh on CentOS
-      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-      block:
-        - name: Install openssh on CentOS
-          ansible.builtin.yum:
-            name:
-              - openssh-clients
-              - openssh-server
-        - name: Generate host keys on CentOS
-          changed_when: false
-          ansible.builtin.command: ssh-keygen -A
-    - name: Install openssh on Debian/Ubuntu
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-      ansible.builtin.apt:
-        name:
-          - openssh-server
-          - openssh-client
-        update_cache: true
-    - name: Workaround directory
-      ansible.builtin.file:
-        path: /var/run/sshd
-        state: directory
-        mode: 0755
-        owner: root
-
   roles:
     - role: skriptfabrik.sshd
