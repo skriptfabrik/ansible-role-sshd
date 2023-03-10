@@ -46,5 +46,5 @@
     force: "{{ ssh_force_create_host_key_files }}"
     path: "{{ _ssh_host_key_file.path }}"
     regenerate: full_idempotence
-    size: "{{ _ssh_host_key_file.size | default(omit)}}"
+    size: "{{ _ssh_host_key_file.size | default(omit) }}"
     type: "{{ _ssh_host_key_file.type }}"
