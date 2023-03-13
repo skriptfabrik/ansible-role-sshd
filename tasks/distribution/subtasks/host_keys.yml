@@ -1,10 +1,18 @@
 ---
-- name: Provide pre defined private ssh host key
+- name: Provide pre defined private ssh host key on target system
   when: _ssh_host_key_file.private_key is defined
-  ansible.builtin.copy:
-    content: "{{ _ssh_host_key_file.private_key }}"
-    dest: "{{ _ssh_host_key_file.path }}"
-    mode: 0600
+  block:
+    - name: Provide pre defined private ssh host key
+      ansible.builtin.copy:
+        content: "{{ _ssh_host_key_file.private_key }}"
+        dest: "{{ _ssh_host_key_file.path }}"
+        mode: 0600
+
+    - name: Get checksum of provided pre defined private ssh host key
+      register: __provided_private_host_key
+      ansible.builtin.stat:
+        checksum_algorithm: sha1
+        path: "{{ _ssh_host_key_file.path }}"
 
 - name: Provide pre defined public ssh host key
   when: _ssh_host_key_file.public_key is defined
@@ -48,3 +56,18 @@
     regenerate: full_idempotence
     size: "{{ _ssh_host_key_file.size | default(omit) }}"
     type: "{{ _ssh_host_key_file.type }}"
+
+- name: Check private ssh host key on target system
+  when: _ssh_host_key_file.private_key is defined
+  block:
+    - name: Get checksum of private ssh host key
+      register: __private_host_key
+      ansible.builtin.stat:
+        checksum_algorithm: sha1
+        path: "{{ _ssh_host_key_file.path }}"
+
+    - name: Check private ssh host key
+      ansible.builtin.assert:
+        fail_msg: The provided ssh host key seems to be overridden by 'Ensure ssh host key exists' task! Please, check type and size in the host key definition!
+        that: __private_host_key.stat.checksum == __provided_private_host_key.stat.checksum
+        quiet: true
