@@ -1,5 +1,5 @@
 ---
-- name: Provide pre defined private ssh host key on target system
+- name: Provide pre defined ssh host key on target system
   when: _ssh_host_key_file.private_key is defined
   block:
     - name: Provide pre defined private ssh host key
@@ -14,12 +14,18 @@
         checksum_algorithm: sha1
         path: "{{ _ssh_host_key_file.path }}"
 
-- name: Provide pre defined public ssh host key
-  when: _ssh_host_key_file.public_key is defined
-  ansible.builtin.copy:
-    content: "{{ _ssh_host_key_file.public_key }}"
-    dest: "{{ _ssh_host_key_file.path }}.pub"
-    mode: 0644
+    - name: Remove old public ssh host key
+      when: _ssh_host_key_file.public_key is not defined
+      ansible.builtin.file:
+        path: "{{ _ssh_host_key_file.path }}.pub"
+        state: absent
+
+    - name: Provide pre defined public ssh host key
+      when: _ssh_host_key_file.public_key is defined
+      ansible.builtin.copy:
+        content: "{{ _ssh_host_key_file.public_key }}"
+        dest: "{{ _ssh_host_key_file.path }}.pub"
+        mode: 0644
 
 - name: Validate key type
   ansible.builtin.assert:
