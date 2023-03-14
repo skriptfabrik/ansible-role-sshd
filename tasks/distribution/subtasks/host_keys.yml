@@ -14,6 +14,12 @@
         checksum_algorithm: sha1
         path: "{{ _ssh_host_key_file.path }}"
 
+    - name: Remove old public ssh host key
+      when: _ssh_host_key_file.public_key is not defined
+      ansible.builtin.file:
+        path: "{{ _ssh_host_key_file.path }}.pub"
+        state: absent
+
     - name: Provide pre defined public ssh host key
       when: _ssh_host_key_file.public_key is defined
       ansible.builtin.copy:
