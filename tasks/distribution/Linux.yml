@@ -75,12 +75,14 @@
     cmd: awk '$5 < {{ sshd_moduli_minimum }}' {{ sshd_moduli_file }}
 
 - name: "Linux : Remove all small primes"
+  register: _remove_small_primes
   notify: Restart linux sshd
   when: sshd_register_moduli.stdout
   ansible.builtin.shell:
     cmd: |
       awk '$5 >= {{ sshd_moduli_minimum }}' {{ sshd_moduli_file }} > {{ sshd_moduli_file }}.new ;
       [ -r {{ sshd_moduli_file }}.new -a -s {{ sshd_moduli_file }}.new ] && mv {{ sshd_moduli_file }}.new {{ sshd_moduli_file }} || true
+  changed_when: "_remove_small_primes.rc == 0"
 
 - name: "Linux : Include tasks to setup ca keys and principals"
   when: ssh_trusted_user_ca_keys_file | length > 0
