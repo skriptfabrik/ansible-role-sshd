@@ -70,6 +70,9 @@
 # See http://danwalsh.livejournal.com/12333.html for more info
 - name: Remove selinux-policy when Pam is used, because Allowing sshd to read the shadow file directly is considered a potential security risk
   become: true
+  register: _remove_selinux_policy
   when: ssh_use_pam | bool and ssh_password_module.stdout.find('ssh_password') == 0
   ansible.builtin.command:
     cmd: semodule -r ssh_password
+  failed_when: "_remove_selinux_policy.rc != 0"
+  changed_when: "_remove_selinux_policy.rc == 0"

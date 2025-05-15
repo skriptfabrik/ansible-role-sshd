@@ -14,7 +14,7 @@
   loop: "{{ ssh_authorized_principals }}"
   ansible.builtin.file:
     path: "{{ item.path | dirname }}"
-    mode: "{{ item.directorymode | default(0700) }}"
+    mode: "{{ item.directorymode | default('0700') }}"
     owner: "{{ item.directoryowner | default(ssh_owner) }}"
     group: "{{ item.directorygroup | default(ssh_group) }}"
     state: directory
@@ -25,6 +25,6 @@
   ansible.builtin.template:
     src: authorized_principals.j2
     dest: "{{ item.path }}"
-    mode: "{{ item.filemode | default(0600) }}"
+    mode: "{{ item.filemode | default('0600') }}"
     owner: "{{ item.owner | default(ssh_owner) }}"
     group: "{{ item.group | default(ssh_group) }}"
