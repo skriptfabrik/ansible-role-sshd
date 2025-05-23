@@ -1,6 +1,6 @@
 ---
 - name: "Windows : Install OpenSSH"
-  become_method: runas
+  become_method: ansible.builtin.runas
   become_user: System
   become: true
   sbaerlocher.windows.win_capability:

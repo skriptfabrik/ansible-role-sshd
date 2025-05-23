@@ -34,12 +34,12 @@ jobs:
     strategy:
       matrix:
         distro:
-          - debian9
           - debian10
           - debian11
-          - ubuntu1804
+          - debian12
           - ubuntu2004
           - ubuntu2204
+          - ubuntu2404
       fail-fast: false
 
     steps:
@@ -51,7 +51,7 @@ jobs:
       - name: Set up Python 3.
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: "3.x"
 
       - name: Install test dependencies.
         run: pip3 install ansible molecule[docker] docker
@@ -59,6 +59,6 @@ jobs:
       - name: Run Molecule tests.
         run: pwd; ls -la; molecule test
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
+          PY_COLORS: "1"
+          ANSIBLE_FORCE_COLOR: "1"
           MOLECULE_DISTRO: ${{ matrix.distro }}
