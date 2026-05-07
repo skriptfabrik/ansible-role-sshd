@@ -23,7 +23,7 @@
   ansible.builtin.template:
     src: revoked_keys.j2
     dest: "{{ sshd_config_path }}/revoked_keys"
-    mode: 0600
+    mode: "0600"
     owner: "{{ ssh_owner }}"
     group: "{{ ssh_group }}"
 
@@ -32,7 +32,7 @@
   when: sshd_version.stdout >= '8.2'
   ansible.builtin.file:
     path: "{{ sshd_config_path }}/sshd_config.d"
-    mode: 0700
+    mode: "0700"
     owner: "{{ ssh_owner }}"
     group: "{{ ssh_group }}"
 
@@ -43,7 +43,7 @@
   ansible.builtin.template:
     src: opensshd.conf.j2
     dest: "{{ sshd_config_path }}/sshd_config"
-    mode: 0600
+    mode: "0600"
     owner: "{{ ssh_owner }}"
     group: "{{ ssh_group }}"
     validate: /usr/sbin/sshd -T -C user=root -C host=localhost -C addr=localhost -f %s
@@ -53,7 +53,7 @@
   when: sshd_version.stdout >= "8.2"
   ansible.builtin.file:
     path: "{{ sshd_config_path }}/ssh_config.d"
-    mode: 0755
+    mode: "0755"
     owner: "{{ ssh_owner }}"
     group: "{{ ssh_group }}"
 
@@ -63,7 +63,7 @@
   ansible.builtin.template:
     src: openssh.conf.j2
     dest: "{{ sshd_config_path }}/ssh_config"
-    mode: 0644
+    mode: "0644"
     owner: "{{ ssh_owner }}"
     group: "{{ ssh_group }}"
 

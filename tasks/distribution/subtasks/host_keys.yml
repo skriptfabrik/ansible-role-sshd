@@ -6,7 +6,7 @@
       ansible.builtin.copy:
         content: "{{ _ssh_host_key_file.private_key }}"
         dest: "{{ _ssh_host_key_file.path }}"
-        mode: 0600
+        mode: "0600"
 
     - name: Get checksum of provided pre defined private ssh host key
       register: __provided_private_host_key
@@ -25,7 +25,7 @@
       ansible.builtin.copy:
         content: "{{ _ssh_host_key_file.public_key }}"
         dest: "{{ _ssh_host_key_file.path }}.pub"
-        mode: 0644
+        mode: "0644"
 
 - name: Validate key type
   ansible.builtin.assert:
