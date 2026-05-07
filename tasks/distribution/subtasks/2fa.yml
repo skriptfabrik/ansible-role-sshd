@@ -9,7 +9,7 @@
 - name: Install google authenticator PAM module
   become: true
   when: ansible_os_family == 'RedHat' or ansible_os_family == 'Oracle Linux'
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: google-authenticator
     state: present
 

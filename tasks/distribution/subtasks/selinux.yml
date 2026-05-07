@@ -36,14 +36,14 @@
         state: directory
         owner: root
         group: root
-        mode: 0750
+        mode: "0750"
 
     - name: Distributing custom selinux policies
       become: true
       ansible.builtin.copy:
         src: ssh_password
         dest: '{{ ssh_custom_selinux_dir }}'
-        mode: 0640
+        mode: "0640"
 
     - name: Check and compile policy
       become: true

@@ -7,7 +7,7 @@
       when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
       block:
         - name: Install openssh on CentOS
-          ansible.builtin.yum:
+          ansible.builtin.dnf:
             name:
               - openssh-clients
               - openssh-server
@@ -25,5 +25,5 @@
       ansible.builtin.file:
         path: /var/run/sshd
         state: directory
-        mode: 0755
+        mode: "0755"
         owner: root
