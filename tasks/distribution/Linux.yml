@@ -77,7 +77,7 @@
 - name: "Linux : Remove all small primes"
   register: _remove_small_primes
   notify: Restart linux sshd
-  when: sshd_register_moduli.stdout
+  when: sshd_register_moduli.stdout | length > 0
   ansible.builtin.shell:
     cmd: |
       awk '$5 >= {{ sshd_moduli_minimum }}' {{ sshd_moduli_file }} > {{ sshd_moduli_file }}.new ;
