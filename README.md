@@ -1,6 +1,7 @@
 # Ansible Role: sshd
 
-[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-sshd-blue.svg?style=popout-square)](https://galaxy.ansible.com/skriptfabrik/sshd) [![Ansible Role](https://img.shields.io/ansible/role/d/59443.svg?style=popout-square)](https://galaxy.ansible.com/skriptfabrik/sshd)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-sshd-blue.svg?style=popout-square)](https://galaxy.ansible.com/skriptfabrik/sshd)
+[![Ansible Role](https://img.shields.io/ansible/role/d/skriptfabrik/sshd?style=popout-square)](https://galaxy.ansible.com/skriptfabrik/sshd)
 
 ## Description
 
