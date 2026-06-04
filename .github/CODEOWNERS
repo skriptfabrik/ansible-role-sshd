@@ -9,3 +9,4 @@
 /tasks/                 @skriptfabrik/ansible-maintainers
 /templates/             @skriptfabrik/ansible-maintainers
 /vars/                  @skriptfabrik/ansible-maintainers
+.ansible-lint           @skriptfabrik/ansible-maintainers
