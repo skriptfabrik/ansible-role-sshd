@@ -2,6 +2,7 @@
 
 [![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-sshd-blue.svg?style=popout-square)](https://galaxy.ansible.com/skriptfabrik/sshd)
 [![Ansible Role](https://img.shields.io/ansible/role/d/skriptfabrik/sshd?style=popout-square)](https://galaxy.ansible.com/skriptfabrik/sshd)
+[![Publish](https://github.com/skriptfabrik/ansible-role-sshd/actions/workflows/publish.yml/badge.svg)](https://github.com/skriptfabrik/ansible-role-sshd/actions/workflows/publish.yml)
 
 ## Description
 
