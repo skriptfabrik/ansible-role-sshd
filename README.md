@@ -3,6 +3,15 @@
 [![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-sshd-blue.svg?style=popout-square)](https://galaxy.ansible.com/skriptfabrik/sshd)
 [![Ansible Role](https://img.shields.io/ansible/role/d/skriptfabrik/sshd?style=popout-square)](https://galaxy.ansible.com/skriptfabrik/sshd)
 
+## Requirements & Setup
+
+- [Docker](https://www.docker.com/)
+- [mise-en-place](https://mise.jdx.dev/)
+- [VS Code](https://code.visualstudio.com/) with [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
+
+1. Clone this repository locally
+2. Start [VS Code](https://code.visualstudio.com/)
+
 ## Description
 
 This role provides secure ssh-client and ssh-server configurations. It is intended to be compliant with the [DevSec SSH Baseline](https://github.com/dev-sec/ssh-baseline).  

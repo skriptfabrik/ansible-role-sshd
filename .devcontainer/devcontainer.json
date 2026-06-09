@@ -1,0 +1,33 @@
+{
+  "$schema": "https://raw.githubusercontent.com/devcontainers/spec/refs/heads/main/schemas/devContainer.base.schema.json",
+  "name": "ansible-role-sshd",
+  "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:3": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers-extra/features/mise:1": {
+      "version": "latest"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "editorconfig.editorconfig",
+        "github.vscode-github-actions",
+        "github.vscode-pull-request-github",
+        "hverlin.mise-vscode",
+        "redhat.ansible",
+        "tamasfe.even-better-toml"
+      ]
+    }
+  },
+  "containerEnv": {
+    "MISE_TRUSTED_CONFIG_PATHS": "${containerWorkspaceFolder}"
+  },
+  "remoteEnv": {
+    "MISE_LOCKFILE": "true"
+  },
+  "onCreateCommand": ".devcontainer/hooks/on-create.sh",
+  "postCreateCommand": ".devcontainer/hooks/post-create.sh"
+}
