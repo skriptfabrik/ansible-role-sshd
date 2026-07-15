@@ -13,6 +13,7 @@
 /templates/             @skriptfabrik/ansible-maintainers
 /vars/                  @skriptfabrik/ansible-maintainers
 .ansible-lint           @skriptfabrik/ansible-maintainers
+requirements.yml        @skriptfabrik/ansible-maintainers
 
 # Pip files
 .python-version         @skriptfabrik/pip-maintainers
