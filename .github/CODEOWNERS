@@ -2,7 +2,7 @@
 /.github/               @skriptfabrik/github-actions-maintainers
 
 # Devcontainer configuration
-/.devcontainer/         @skriptfabrik/devcontainer-maintainers
+/.devcontainer/       @skriptfabrik/devcontainer-maintainers
 
 # Ansible files
 /defaults/              @skriptfabrik/ansible-maintainers
