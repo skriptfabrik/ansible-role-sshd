@@ -36,5 +36,5 @@
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   ansible.builtin.replace:
     dest: /etc/pam.d/sshd
-    regexp: '^@include common-auth'
-    replace: '#@include common-auth'
+    regexp: "^@include common-auth"
+    replace: "#@include common-auth"

@@ -20,7 +20,7 @@
   tags:
     - configuration
     - packages
-  ansible.builtin.include_vars: '{{ loop_vars }}'
+  ansible.builtin.include_vars: "{{ loop_vars }}"
 
 - name: Include distribution tasks
   with_first_found:

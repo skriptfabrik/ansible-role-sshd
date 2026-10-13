@@ -42,7 +42,7 @@
       become: true
       ansible.builtin.copy:
         src: ssh_password
-        dest: '{{ ssh_custom_selinux_dir }}'
+        dest: "{{ ssh_custom_selinux_dir }}"
         mode: "0640"
 
     - name: Check and compile policy
