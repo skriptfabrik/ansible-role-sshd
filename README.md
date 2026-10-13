@@ -36,7 +36,7 @@ None
 true if IPv6 is needed
 
 ```yml
-ssh_ipv6_enable: '{{ network_ipv6_enable | default(false) }}' # sshd + ssh
+ssh_ipv6_enable: "{{ network_ipv6_enable | default(false) }}" # sshd + ssh
 ```
 
 ### ssh_server_enabled
@@ -86,7 +86,7 @@ ssh_server_password_login: false # sshd
 ports on which ssh-server should listen
 
 ```yml
-ssh_server_ports: ['22'] # sshd
+ssh_server_ports: ["22"] # sshd
 ```
 
 ### ssh_client_port
@@ -94,7 +94,7 @@ ssh_server_ports: ['22'] # sshd
 port to which ssh-client should connect
 
 ```yml
-ssh_client_port: '22' # ssh
+ssh_client_port: "22" # ssh
 ```
 
 ### ssh_listen_to
@@ -102,7 +102,7 @@ ssh_client_port: '22' # ssh
 one or more ip addresses, to which ssh-server should listen to. Default is empty, but should be configured for security reasons!
 
 ```yml
-ssh_listen_to: ['0.0.0.0'] # sshd
+ssh_listen_to: ["0.0.0.0"] # sshd
 ```
 
 ### ssh_host_key_files
@@ -172,10 +172,10 @@ ssh_remote_hosts: []
 
 ```yml
 ssh_remote_hosts:
-  - names: ['example.com', 'example2.com']
-    options: ['Port 2222', 'ForwardAgent yes']
-  - names: ['example3.com']
-    options: ['StrictHostKeyChecking no']
+  - names: ["example.com", "example2.com"]
+    options: ["Port 2222", "ForwardAgent yes"]
+  - names: ["example3.com"]
+    options: ["StrictHostKeyChecking no"]
 ```
 
 ### ssh_allow_root_with_key
@@ -183,7 +183,7 @@ ssh_remote_hosts:
 Set this to "without-password" or "yes" to allow root to login
 
 ```yml
-ssh_allow_root_with_key: 'no' # sshd
+ssh_allow_root_with_key: "no" # sshd
 ```
 
 ### ssh_allow_tcp_forwarding
@@ -265,7 +265,7 @@ ssh_kerberos_support: true
 if specified, login is disallowed for user names that match one of the patterns.
 
 ```yml
-ssh_deny_users: '' # sshd
+ssh_deny_users: "" # sshd
 ```
 
 ### ssh_allow_users
@@ -273,7 +273,7 @@ ssh_deny_users: '' # sshd
 if specified, login is allowed only for user names that match one of the patterns.
 
 ```yml
-ssh_allow_users: '' # sshd
+ssh_allow_users: "" # sshd
 ```
 
 ### ssh_deny_groups
@@ -281,7 +281,7 @@ ssh_allow_users: '' # sshd
 if specified, login is disallowed for users whose primary group or supplementary group list matches one of the patterns.
 
 ```yml
-ssh_deny_groups: '' # sshd
+ssh_deny_groups: "" # sshd
 ```
 
 ### ssh_allow_groups
@@ -289,7 +289,7 @@ ssh_deny_groups: '' # sshd
 if specified, login is allowed only for users whose primary group or supplementary group list matches one of the patterns.
 
 ```yml
-ssh_allow_groups: '' # sshd
+ssh_allow_groups: "" # sshd
 ```
 
 ### ssh_authorized_keys_file
@@ -297,7 +297,7 @@ ssh_allow_groups: '' # sshd
 change default file that contains the public keys that can be used for user authentication.
 
 ```yml
-ssh_authorized_keys_file: '' # sshd
+ssh_authorized_keys_file: "" # sshd
 ```
 
 ### ssh_trusted_user_ca_keys_file
@@ -305,7 +305,7 @@ ssh_authorized_keys_file: '' # sshd
 specifies the file containing trusted certificate authorities public keys used to sign user certificates.
 
 ```yml
-ssh_trusted_user_ca_keys_file: '' # sshd
+ssh_trusted_user_ca_keys_file: "" # sshd
 ```
 
 ### ssh_trusted_user_ca_keys
@@ -320,8 +320,8 @@ ssh_trusted_user_ca_keys: [] # sshd
 
 ```yml
 ssh_trusted_user_ca_keys:
-  - 'ssh-rsa ... comment1'
-  - 'ssh-rsa ... comment2'
+  - "ssh-rsa ... comment1"
+  - "ssh-rsa ... comment2"
 ```
 
 ### ssh_authorized_principals_file
@@ -329,13 +329,13 @@ ssh_trusted_user_ca_keys:
 specifies the file containing principals that are allowed. Only used if ssh_trusted_user_ca_keys_file is set.
 
 ```yml
-ssh_authorized_principals_file: '' # sshd
+ssh_authorized_principals_file: "" # sshd
 ```
 
 #### Example
 
 ```yml
-ssh_authorized_principals_file: '/etc/ssh/auth_principals/%u'
+ssh_authorized_principals_file: "/etc/ssh/auth_principals/%u"
 ```
 
 %h is replaced by the home directory of the user being authenticated, and %u is
@@ -354,18 +354,8 @@ ssh_authorized_principals: [] # sshd
 
 ```yml
 ssh_authorized_principals:
-  - {
-      path: '/etc/ssh/auth_principals/root',
-      principals: ['root'],
-      owner: '{{ ssh_owner }}',
-      group: '{{ ssh_group }}',
-      directoryowner: '{{ ssh_owner }}',
-      directorygroup: '{{ ssh_group}}',
-    }
-  - {
-      path: '/etc/ssh/auth_principals/myuser',
-      principals: ['masteradmin', 'webserver'],
-    }
+  - { path: "/etc/ssh/auth_principals/root", principals: ["root"], owner: "{{ ssh_owner }}", group: "{{ ssh_group }}", directoryowner: "{{ ssh_owner }}", directorygroup: "{{ ssh_group}}" }
+  - { path: "/etc/ssh/auth_principals/myuser", principals: ["masteradmin", "webserver"] }
 ```
 
 ### ssh_print_motd
@@ -405,7 +395,7 @@ ssh_print_debian_banner: false # sshd (Debian OS family only)
 true to enable sftp configuration
 
 ```yml
-ssh_sftp_enabled: '{{ sftp_enabled | default(false) }}'
+ssh_sftp_enabled: "{{ sftp_enabled | default(false) }}"
 ```
 
 ### ssh_sftp_chroot
@@ -413,7 +403,7 @@ ssh_sftp_enabled: '{{ sftp_enabled | default(false) }}'
 false to disable sftp chroot
 
 ```yml
-ssh_sftp_chroot: '{{ sftp_chroot | default(true) }}'
+ssh_sftp_chroot: "{{ sftp_chroot | default(true) }}"
 ```
 
 ### ssh_sftp_chroot_dir
@@ -474,19 +464,19 @@ ssh_server_permit_environment_vars: false
 maximum number of concurrent unauthenticated connections to the SSH daemon
 
 ```yml
-ssh_max_startups: '10:30:100' # sshd
+ssh_max_startups: "10:30:100" # sshd
 ```
 
 ### ssh_ps53
 
 ```yml
-ssh_ps53: 'yes'
+ssh_ps53: "yes"
 ```
 
 ### ssh_ps59
 
 ```yml
-ssh_ps59: 'sandbox'
+ssh_ps59: "sandbox"
 ```
 
 ### ssh_macs
@@ -587,9 +577,9 @@ ssh_kex_66_default:
 directory where to store ssh_password policy
 
 ```yml
-ssh_custom_selinux_dir: '/etc/selinux/local-policies'
+ssh_custom_selinux_dir: "/etc/selinux/local-policies"
 
-sshd_moduli_file: '/etc/ssh/moduli'
+sshd_moduli_file: "/etc/ssh/moduli"
 sshd_moduli_minimum: 2048
 ```
 
