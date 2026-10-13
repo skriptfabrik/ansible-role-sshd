@@ -2,10 +2,10 @@
 - name: Restart linux sshd
   become: true
   ansible.builtin.service:
-    name: '{{ sshd_service_name }}'
+    name: "{{ sshd_service_name }}"
     state: restarted
 
 - name: Restart windows sshd
   ansible.windows.win_service:
-    name: '{{ sshd_service_name }}'
+    name: "{{ sshd_service_name }}"
     state: restarted
